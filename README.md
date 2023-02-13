@@ -22,33 +22,29 @@ The algorithm has been modified from that in the literature by:
 
 - Stylizing the image at progressively larger scales, each greater by a factor of sqrt(2) (this is improved from the multi-scale scheme given in Gatys et al. (2016))
 
-## Example outputs (click for the full-sized version)
+## Example outputs
 
-<a href="https://9285c52c-d9b1-40d1-8ac1-e75634aad92d.s3-us-west-2.amazonaws.com/mst195.jpg"><img src="https://9285c52c-d9b1-40d1-8ac1-e75634aad92d.s3-us-west-2.amazonaws.com/mst195_small.jpg" width="512" height="401"></a>
+<img src="./examples/golden_gate.jpg" width="512" height="401" title="content image"></a>
 
-<a href="https://9285c52c-d9b1-40d1-8ac1-e75634aad92d.s3-us-west-2.amazonaws.com/mst235.jpg"><img src="https://9285c52c-d9b1-40d1-8ac1-e75634aad92d.s3-us-west-2.amazonaws.com/mst235_small.jpg" width="512" height="401"></a>
+<img src="./examples/starry_night.jpg" width="512" height="401" title="style image"></a>
 
-<a href="https://9285c52c-d9b1-40d1-8ac1-e75634aad92d.s3-us-west-2.amazonaws.com/mst256.jpg"><img src="https://9285c52c-d9b1-40d1-8ac1-e75634aad92d.s3-us-west-2.amazonaws.com/mst256_small.jpg" width="512" height="401"></a>
-
-<a href="https://9285c52c-d9b1-40d1-8ac1-e75634aad92d.s3-us-west-2.amazonaws.com/mst201.jpg"><img src="https://9285c52c-d9b1-40d1-8ac1-e75634aad92d.s3-us-west-2.amazonaws.com/mst201_small.jpg" width="512" height="401"></a>
-
-<a href="https://9285c52c-d9b1-40d1-8ac1-e75634aad92d.s3-us-west-2.amazonaws.com/mst310.jpg"><img src="https://9285c52c-d9b1-40d1-8ac1-e75634aad92d.s3-us-west-2.amazonaws.com/mst310_small.jpg" width="512" height="401"></a>
+<img src="./examples/out.png" width="512" height="401" title="generated image"></a>
 
 ## Installation
 
-[Python](https://www.python.org/downloads/) 3.6+ is required.
+Tested with Ubuntu 22.04, [Python 3.7](https://www.python.org/downloads/), [PyTorch 1.13](https://pytorch.org).
 
-[PyTorch](https://pytorch.org) is required: follow [their installation instructions](https://pytorch.org/get-started/locally/) before proceeding. If you do not have an Nvidia GPU, select None for CUDA. On Linux, you can find out your CUDA version using the `nvidia-smi` command. PyTorch packages for CUDA versions lower than yours will work, but select the highest you can.
-
-To install `style-transfer-pytorch`, first clone the repository, then run the command:
+On Linux, you can find out your CUDA version using the `nvidia-smi` command. PyTorch packages for CUDA versions lower than yours will work, but select the highest you can.
 
 ```sh
-pip install -e PATH_TO_REPO
+conda create -n nst python=3.7
+conda activate nst
+pip install -r requirements.txt
 ```
 
-This will install the `style_transfer` CLI tool. `style_transfer` uses a pre-trained VGG-19 model (Simonyan et al.), which is 548MB in size, and will download it when first run.
+`stylize.py` uses a pre-trained VGG-19 model (Simonyan et al.), which is 548MB in size, and will download it when first run.
 
-If you have a supported GPU and `style_transfer` is using the CPU, try using the argument `--device cuda:0` to force it to try to use the first CUDA GPU. This should print an informative error message.
+If you have a supported GPU and `stylize.py` is using the CPU, try using the argument `--device cuda:0` to force it to try to use the first CUDA GPU. This should print an informative error message.
 
 ## Colab
 
@@ -57,14 +53,12 @@ You can try `style_transfer` without installing it locally by using the [officia
 ## Basic usage
 
 ```sh
-style_transfer CONTENT_IMAGE STYLE_IMAGE [STYLE_IMAGE ...] [-o OUTPUT_IMAGE]
+stylize.py PATH_TO_CONTENT_IMAGE PATH_TO_STYLE_IMAGE [STYLE_IMAGE ...] [-o OUTPUT_IMAGE]
 ```
 
 Input images will be converted to sRGB when loaded, and output images have the sRGB colorspace. If the output image is a TIFF file, it will be written with 16 bits per channel. Alpha channels in the inputs will be ignored.
 
 `style_transfer` has many optional arguments: run it with the `--help` argument to see a full list. Particularly notable ones include:
-
-- `--web` enables a simple web interface while the program is running that allows you to watch its progress. It runs on port 8080 by default, but you can change it with `--port`. If you just want to view the current image and refresh it manually, you can go to `/image`.
 
 - `--devices` manually sets the PyTorch device names. It can be set to `cpu` to force it to run on the CPU on a machine with a supported GPU, or to e.g. `cuda:1` (zero indexed) to select the second CUDA GPU. Two GPUs can be specified, for instance `--devices cuda:0 cuda:1`. `style_transfer` will automatically use the first visible CUDA GPU, falling back to the CPU, if it is omitted.
 
