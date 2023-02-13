@@ -30,7 +30,7 @@ class VGGFeatures(nn.Module):
 
         # The PyTorch pre-trained VGG-19 has different parameters from Simonyan et al.'s original
         # model.
-        self.model = models.vgg19(pretrained=True).features[:self.layers[-1] + 1]
+        self.model = models.vgg19(weights='VGG19_Weights.DEFAULT').features[:self.layers[-1] + 1]
         self.devices = [torch.device('cpu')] * len(self.model)
 
         # Reduces edge artifacts.
