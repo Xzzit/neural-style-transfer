@@ -222,9 +222,7 @@ def gen_scales(start, end):
 
 
 def interpolate(*args, **kwargs):
-    with warnings.catch_warnings():
-        warnings.simplefilter('ignore', UserWarning)
-        return F.interpolate(*args, **kwargs)
+    return F.interpolate(*args, **kwargs)
 
 
 def scale_adam(state, shape):
@@ -349,7 +347,7 @@ class StyleTransfer:
             content = TF.to_tensor(content_image.resize((cw, ch), Image.LANCZOS))[None]
             content = content.to(self.devices[0])
 
-            self.image = interpolate(self.image.detach(), (ch, cw), mode='bicubic').clamp(0, 1)
+            self.image = interpolate(self.image.detach(), [ch, cw], mode='bicubic').clamp(0, 1)
             self.average = EMA(self.image, avg_decay)
             self.image.requires_grad_()
 
