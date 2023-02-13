@@ -9,7 +9,6 @@ import numpy as np
 from PIL import Image, ImageCms
 from tifffile import TIFF, TiffWriter
 import torch
-import torch.multiprocessing as mp
 from tqdm import tqdm
 
 from style_transfer import StyleTransfer
@@ -164,7 +163,7 @@ def main():
         for i, device in enumerate(devices):
             props = torch.cuda.get_device_properties(device)
             print(f'GPU {i} type: {props.name} (compute {props.major}.{props.minor})')
-            print(f'GPU {i} RAM:', round(props.total_memory / 1024 / 1024), 'MB')
+            print(f'GPU {i} RAM:', round(props.total_memory / 1024**3), 'GB')
 
     end_scale = int(args.end_scale.rstrip('+'))
     if args.end_scale.endswith('+'):

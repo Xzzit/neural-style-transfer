@@ -4,7 +4,6 @@ import copy
 from dataclasses import dataclass
 from functools import partial
 import time
-import warnings
 
 import numpy as np
 from PIL import Image
