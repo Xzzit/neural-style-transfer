@@ -53,7 +53,7 @@ You can try `style_transfer` without installing it locally by using the [officia
 ## Basic usage
 
 ```sh
-stylize.py PATH_TO_CONTENT_IMAGE PATH_TO_STYLE_IMAGE [STYLE_IMAGE ...] [-o OUTPUT_IMAGE]
+stylize.py PATH_TO_CONTENT_IMAGE PATH_TO_STYLE_IMAGE -o OUTPUT_IMAGE
 ```
 
 Input images will be converted to sRGB when loaded, and output images have the sRGB colorspace. If the output image is a TIFF file, it will be written with 16 bits per channel. Alpha channels in the inputs will be ignored.
