@@ -177,7 +177,13 @@ def main():
     print('Loading model...')
     st = StyleTransfer(devices=devices, pooling=args.pooling)
 
-    st.stylize(content_img, style_imgs)
+    defaults = StyleTransfer.stylize.__kwdefaults__
+    st_kwargs = {k: v for k, v in args.__dict__.items() if k in defaults}
+    try:
+        st.stylize(content_img, style_imgs, **st_kwargs)
+    except KeyboardInterrupt:
+        pass
+
     output_image = st.get_image(image_type)
     if output_image is not None:
         save_image(args.output, output_image)
