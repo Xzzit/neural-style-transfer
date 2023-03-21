@@ -5,6 +5,8 @@ import io
 from pathlib import Path
 import sys
 
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 import numpy as np
 from PIL import Image, ImageCms
 from tifffile import TIFF, TiffWriter
@@ -13,7 +15,7 @@ from tqdm import tqdm
 
 from style_transfer import StyleTransfer
 
-srgb_profile = (Path(__file__).resolve().parent / 'sRGB Profile.icc').read_bytes()
+srgb_profile = (Path(__file__).resolve().parent.parent / 'sRGB Profile.icc').read_bytes()
 
 
 def prof_to_prof(image, src_prof, dst_prof, **kwargs):
