@@ -111,16 +111,17 @@ def set_parameter_requires_grad(model, feature_extracting):
 
 def initialize_model(num_classes=1000, feature_extract=False):
 
+    input_size = 224
     model_ft = models.vgg19(weights='VGG19_Weights.DEFAULT')
     set_parameter_requires_grad(model_ft, feature_extract)
     num_ftrs = model_ft.classifier[6].in_features
     model_ft.classifier[6] = nn.Linear(num_ftrs,num_classes)
 
-    return model_ft
+    return model_ft, input_size
 
 
 # Initialize the model for this run
-model_ft = initialize_model(num_classes, feature_extract)
+model_ft, input_size = initialize_model(num_classes, feature_extract)
 
 # Print the model we just instantiated
 print(model_ft)
@@ -150,7 +151,7 @@ image_datasets = {x: datasets.ImageFolder(os.path.join(data_dir, x), data_transf
 dataloaders_dict = {x: torch.utils.data.DataLoader(image_datasets[x], batch_size=batch_size, shuffle=True, num_workers=4) for x in ['train', 'val']}
 
 # Detect if we have a GPU available
-device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+device = torch.device("cuda:7" if torch.cuda.is_available() else "cpu")
 
 # Send the model to GPU
 model_ft = model_ft.to(device)
